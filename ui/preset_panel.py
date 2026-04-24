@@ -106,6 +106,16 @@ class PresetPanel(QWidget):
     def _build_ui(self) -> None:
         outer = QVBoxLayout(self)
         outer.setContentsMargins(0, 0, 0, 0)
+        outer.setSpacing(0)
+
+        # Film-sim accent stripe — 3 px colour bar at the top of the panel.
+        # Colour updates dynamically in _update_sim_dot() whenever the
+        # film simulation selection changes.
+        self.simAccentBar = QFrame()
+        self.simAccentBar.setObjectName('simAccentBar')
+        self.simAccentBar.setFixedHeight(3)
+        self.simAccentBar.setFrameShape(QFrame.Shape.NoFrame)
+        outer.addWidget(self.simAccentBar)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -352,9 +362,21 @@ class PresetPanel(QWidget):
         self.colorSpin.setEnabled(not is_mono)
 
     def _update_sim_dot(self) -> None:
-        """Update the film-sim colour dot to match the selected simulation."""
+        """Update all sim-colour indicators to match the selected simulation."""
         color = SIM_COLORS.get(self._current_film_sim(), '#666670')
+
+        # Coloured dot beside the Film Simulation combo label
         self.filmSimDot.setStyleSheet(f'color: {color}; font-size: 11px;')
+
+        # 3 px accent stripe at the top of the panel
+        self.simAccentBar.setStyleSheet(f'background-color: {color}; border: none;')
+
+        # Slot tag — left border colour matches the active film sim
+        self.slotTag.setStyleSheet(
+            f'font-size: 15pt; font-weight: 700; color: {color};'
+            f' padding: 2px 8px 2px 14px; border: none;'
+            f' border-left: 3px solid {color}; background: transparent;'
+        )
 
     def _update_color_temp_enabled(self) -> None:
         wb = self.wbCombo.currentData()
