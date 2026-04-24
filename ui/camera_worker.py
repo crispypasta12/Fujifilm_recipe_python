@@ -37,7 +37,7 @@ class CameraWorker(QObject):
             cam.connect()
             self._camera = cam
             self._base_props.clear()
-            self.connected.emit('X100VI')
+            self.connected.emit(cam.transport.model)
             self._do_read_all()
         except Exception as e:
             self._camera = None

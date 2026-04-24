@@ -15,7 +15,7 @@ import usb.util
 
 from .constants import (
     FUJI_VENDOR_ID,
-    X100VI_PRODUCT_ID,
+    FUJI_PRODUCT_IDS,
     ContainerType,
     PTPResp,
 )
@@ -31,9 +31,9 @@ class PTPTransport:
     READ_CHUNK = 512
     DEFAULT_TIMEOUT = 5000  # ms
 
-    def __init__(self, vendor_id: int = FUJI_VENDOR_ID, product_id: int = X100VI_PRODUCT_ID):
-        self.vendor_id = vendor_id
-        self.product_id = product_id
+    def __init__(self):
+        self.vendor_id = FUJI_VENDOR_ID
+        self.model: str = 'Unknown'
         self.device: Optional[usb.core.Device] = None
         self.interface = None
         self.ep_in = None
@@ -54,10 +54,17 @@ class PTPTransport:
     def open(self) -> None:
         """Find camera, detach kernel driver (non-Windows), claim interface."""
         backend = self._get_backend()
-        dev = usb.core.find(idVendor=self.vendor_id, idProduct=self.product_id, backend=backend)
+        dev = None
+        for pid, model in FUJI_PRODUCT_IDS.items():
+            dev = usb.core.find(idVendor=self.vendor_id, idProduct=pid, backend=backend)
+            if dev is not None:
+                self.model = model
+                break
         if dev is None:
+            known = ', '.join(FUJI_PRODUCT_IDS.values())
             raise PTPError(
-                f'Camera not found (vid=0x{self.vendor_id:04X}, pid=0x{self.product_id:04X}). '
+                f'No supported Fujifilm camera found. '
+                f'Supported models: {known}. '
                 'On Windows, use Zadig to install WinUSB/libusb driver for the camera.'
             )
 

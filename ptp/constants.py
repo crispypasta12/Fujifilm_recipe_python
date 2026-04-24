@@ -157,6 +157,7 @@ FUJI_PRODUCT_IDS = {
     0x02E3: 'X-T30',
     0x02E5: 'X100V',
     0x02E7: 'X-T4',
+    0x02F0: 'X-H2S',
     0x0305: 'X100VI',
 }
 

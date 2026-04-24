@@ -1,4 +1,12 @@
-"""Main application window for FujiRecipe."""
+"""Main application window for FujiRecipe — Visual Overhaul v2.
+
+Changes from v1:
+  • Frameless window with custom TitleBar (drag / min / max / close)
+  • QTabWidget replaced by vertical SlotRail (QListWidget) + QStackedWidget
+  • SlotItemDelegate renders slot number, film-sim name, and dirty indicator
+  • Drop-shadow on the top toolbar for depth
+  • SIM_COLORS used to colour slot rail items per active film simulation
+"""
 
 from __future__ import annotations
 
@@ -7,17 +15,25 @@ import os
 from pathlib import Path
 from typing import Optional
 
-from PyQt6.QtCore import QThread, Qt, pyqtSignal
+from PyQt6.QtCore import QPoint, QRect, QSize, QThread, Qt, pyqtSignal
+from PyQt6.QtGui import QColor, QFont, QPainter
 from PyQt6.QtWidgets import (
+    QAbstractItemView,
     QFileDialog,
+    QFrame,
+    QGraphicsDropShadowEffect,
     QHBoxLayout,
     QLabel,
+    QListWidget,
+    QListWidgetItem,
     QMainWindow,
     QMenu,
     QMessageBox,
     QPushButton,
+    QStackedWidget,
     QStatusBar,
-    QTabWidget,
+    QStyledItemDelegate,
+    QStyle,
     QToolButton,
     QVBoxLayout,
     QWidget,
@@ -30,6 +46,7 @@ from profile.enums import (
     DynRangeLabels,
     FilmSimLabels,
     GrainEffectLabels,
+    SIM_COLORS,
     SmoothSkinLabels,
     WBModeLabels,
     label_to_value,
@@ -45,68 +62,235 @@ from .recipe_creator import RecipeCreatorDialog
 PRESETS_DIR = Path(__file__).resolve().parent.parent / 'recipes' / 'presets'
 
 
+# ---------------------------------------------------------------------------
+# Custom title bar
+# ---------------------------------------------------------------------------
+
+class TitleBar(QWidget):
+    """Frameless-window title bar: drag to move, double-click to maximise."""
+
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent)
+        self.setObjectName('TitleBar')
+        self.setFixedHeight(40)
+        self._drag_pos: Optional[QPoint] = None
+        self._build_ui()
+
+    def _build_ui(self) -> None:
+        lay = QHBoxLayout(self)
+        lay.setContentsMargins(14, 0, 6, 0)
+        lay.setSpacing(6)
+
+        dot = QLabel('●')
+        dot.setObjectName('titleDot')
+
+        title = QLabel('FujiRecipe')
+        title.setObjectName('titleLabel')
+
+        lay.addWidget(dot)
+        lay.addWidget(title)
+        lay.addStretch(1)
+
+        self._min_btn = self._ctrl_btn('—', 'min')
+        self._max_btn = self._ctrl_btn('□', 'max')
+        self._cls_btn = self._ctrl_btn('✕', 'close')
+
+        for btn in (self._min_btn, self._max_btn, self._cls_btn):
+            lay.addWidget(btn)
+
+        self._min_btn.clicked.connect(lambda: self.window().showMinimized())
+        self._max_btn.clicked.connect(self._toggle_maximised)
+        self._cls_btn.clicked.connect(lambda: self.window().close())
+
+    def _ctrl_btn(self, text: str, role: str) -> QPushButton:
+        btn = QPushButton(text)
+        btn.setObjectName('winCtrlBtn')
+        btn.setProperty('role', role)
+        btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        return btn
+
+    def _toggle_maximised(self) -> None:
+        w = self.window()
+        if w.isMaximized():
+            w.showNormal()
+        else:
+            w.showMaximized()
+
+    # ── drag handling ────────────────────────────────────────────────────────
+
+    def mousePressEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._drag_pos = (
+                event.globalPosition().toPoint() - self.window().frameGeometry().topLeft()
+            )
+
+    def mouseMoveEvent(self, event) -> None:
+        if self._drag_pos is not None and event.buttons() == Qt.MouseButton.LeftButton:
+            if self.window().isMaximized():
+                self.window().showNormal()
+            self.window().move(event.globalPosition().toPoint() - self._drag_pos)
+
+    def mouseReleaseEvent(self, event) -> None:
+        self._drag_pos = None
+
+    def mouseDoubleClickEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._toggle_maximised()
+
+
+# ---------------------------------------------------------------------------
+# Slot rail item delegate
+# ---------------------------------------------------------------------------
+
+class SlotItemDelegate(QStyledItemDelegate):
+    """Paints each slot rail cell: large slot label + film-sim name + dirty dot."""
+
+    _ITEM_H  = 62
+    _STRIPE_W = 3
+
+    def sizeHint(self, option, index) -> QSize:
+        return QSize(0, self._ITEM_H)
+
+    def paint(self, painter: QPainter, option, index) -> None:
+        painter.save()
+        r = option.rect
+
+        is_selected = bool(option.state & QStyle.StateFlag.State_Selected)
+        is_hover    = bool(option.state & QStyle.StateFlag.State_MouseOver)
+
+        sim_color_hex: str = index.data(Qt.ItemDataRole.UserRole + 1) or '#666670'
+        sim_color          = QColor(sim_color_hex)
+        slot_text: str     = index.data(Qt.ItemDataRole.DisplayRole) or ''
+        sim_name: str      = index.data(Qt.ItemDataRole.UserRole)     or ''
+        dirty: bool        = bool(index.data(Qt.ItemDataRole.UserRole + 2))
+
+        # ── Background ───────────────────────────────────────────────────────
+        if is_selected:
+            painter.fillRect(r, QColor('#1a1a26'))
+            # Left accent stripe
+            painter.fillRect(QRect(r.left(), r.top(), self._STRIPE_W, r.height()), sim_color)
+        elif is_hover:
+            painter.fillRect(r, QColor('#14141e'))
+
+        # ── Slot label (C1 … C7) ─────────────────────────────────────────────
+        slot_font = QFont(painter.font())
+        slot_font.setPointSize(14)
+        slot_font.setWeight(QFont.Weight.Bold)
+        painter.setFont(slot_font)
+
+        label_color = sim_color if is_selected else QColor('#c4c4d8')
+        painter.setPen(label_color)
+
+        text_x = r.left() + self._STRIPE_W + 12
+        painter.drawText(
+            QRect(text_x, r.top() + 6, r.width() - text_x - 20, 24),
+            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+            slot_text,
+        )
+
+        # ── Dirty indicator ──────────────────────────────────────────────────
+        if dirty:
+            dot_font = QFont(painter.font())
+            dot_font.setPointSize(7)
+            painter.setFont(dot_font)
+            dot_color = QColor(sim_color_hex) if is_selected else QColor('#5a5a72')
+            painter.setPen(dot_color)
+            painter.drawText(
+                QRect(r.right() - 16, r.top() + 8, 12, 12),
+                Qt.AlignmentFlag.AlignCenter,
+                '●',
+            )
+
+        # ── Film-sim name ────────────────────────────────────────────────────
+        if sim_name:
+            sim_font = QFont(painter.font())
+            sim_font.setPointSize(8)
+            sim_font.setWeight(QFont.Weight.Normal)
+            painter.setFont(sim_font)
+            sim_label_color = QColor(sim_color_hex) if is_selected else QColor('#5a5a72')
+            painter.setPen(sim_label_color)
+            painter.drawText(
+                QRect(text_x, r.top() + 34, r.width() - text_x - 8, 18),
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+                sim_name,
+            )
+
+        # ── Bottom separator ─────────────────────────────────────────────────
+        painter.setPen(QColor('#1a1a22'))
+        painter.drawLine(r.left(), r.bottom(), r.right(), r.bottom())
+
+        painter.restore()
+
+
+# ---------------------------------------------------------------------------
+# Main window
+# ---------------------------------------------------------------------------
+
 class MainWindow(QMainWindow):
-    """FujiRecipe main window."""
+    """FujiRecipe main window — frameless, slot-rail layout."""
 
     NUM_SLOTS = 7
 
-    # signals to worker (queued across thread boundary automatically)
     _connectRequested    = pyqtSignal()
     _disconnectRequested = pyqtSignal()
     _readAllRequested    = pyqtSignal()
-    _writeSlotRequested  = pyqtSignal(int, str, object)  # slot, name, PresetUIValues
+    _writeSlotRequested  = pyqtSignal(int, str, object)
 
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle('FujiRecipe — Fujifilm Film Simulation Editor')
-        self.resize(720, 900)
+        self.setWindowTitle('FujiRecipe')
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.resize(760, 920)
+        self.setMinimumSize(640, 600)
 
         self._connected = False
-        self._busy = False
+        self._busy      = False
+        self._model     = 'Camera'
         self._browser: Optional[RecipeBrowserDialog] = None
 
         self._build_ui()
         self._setup_worker()
         self._set_connected(False)
 
-    # ------------------------------------------------------------ build UI
+    # ─────────────────────────────────────────────────────────── build UI ───
 
     def _build_ui(self) -> None:
         central = QWidget()
         self.setCentralWidget(central)
         root = QVBoxLayout(central)
-        root.setContentsMargins(16, 12, 16, 12)
-        root.setSpacing(10)
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
 
-        # ── Top bar ──────────────────────────────────────────────────────────
+        # ── Custom title bar ─────────────────────────────────────────────────
+        self._title_bar = TitleBar(self)
+        root.addWidget(self._title_bar)
+
+        # ── Top toolbar ──────────────────────────────────────────────────────
         top = QWidget()
         top.setObjectName('TopBar')
         top_l = QHBoxLayout(top)
-        top_l.setContentsMargins(12, 8, 12, 8)
+        top_l.setContentsMargins(12, 6, 12, 6)
         top_l.setSpacing(8)
-
-        self.title = QLabel('FujiRecipe')
-        self.title.setProperty('role', 'heading')
 
         self.connDot = QLabel('●')
         self.connDot.setObjectName('connDot')
         self.connDot.setProperty('state', 'off')
+
         self.connStatus = QLabel('Disconnected')
         self.connStatus.setProperty('role', 'dim')
 
-        # File ▾ menu button (Import / Export)
         self.fileBtn = QToolButton()
         self.fileBtn.setText('File ▾')
         self.fileBtn.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         self.fileBtn.setStyleSheet('QToolButton::menu-indicator { image: none; }')
         file_menu = QMenu(self.fileBtn)
-        file_menu.addAction('Import Recipe…',    self._on_import_clicked)
-        file_menu.addAction('Import All…',        self._on_import_all_clicked)
+        file_menu.addAction('Import Recipe…',  self._on_import_clicked)
+        file_menu.addAction('Import All…',      self._on_import_all_clicked)
         file_menu.addSeparator()
-        file_menu.addAction('Export Slot…',       self._on_export_clicked)
-        file_menu.addAction('Export All…',        self._on_export_all_clicked)
+        file_menu.addAction('Export Slot…',     self._on_export_clicked)
+        file_menu.addAction('Export All…',      self._on_export_all_clicked)
         file_menu.addSeparator()
-        file_menu.addAction('Export Card…',       self._on_export_card_clicked)
+        file_menu.addAction('Export Card…',     self._on_export_card_clicked)
         self.fileBtn.setMenu(file_menu)
 
         self.browseBtn = QPushButton('Browse Recipes')
@@ -119,33 +303,69 @@ class MainWindow(QMainWindow):
         self.connectBtn = QPushButton('Connect')
         self.connectBtn.clicked.connect(self._on_connect_clicked)
 
-        top_l.addWidget(self.title)
-        top_l.addStretch(1)
         top_l.addWidget(self.connDot)
         top_l.addWidget(self.connStatus)
-        top_l.addSpacing(8)
+        top_l.addStretch(1)
         top_l.addWidget(self.fileBtn)
         top_l.addWidget(self.browseBtn)
         top_l.addWidget(self.readAllBtn)
         top_l.addWidget(self.connectBtn)
+
+        # Drop shadow beneath the toolbar
+        toolbar_shadow = QGraphicsDropShadowEffect()
+        toolbar_shadow.setBlurRadius(14)
+        toolbar_shadow.setOffset(0, 3)
+        toolbar_shadow.setColor(QColor(0, 0, 0, 110))
+        top.setGraphicsEffect(toolbar_shadow)
+
         root.addWidget(top)
 
-        # ── Tabs ─────────────────────────────────────────────────────────────
-        self.tabs = QTabWidget()
+        # ── Main content: slot rail │ preset panel ───────────────────────────
+        content = QWidget()
+        content_l = QHBoxLayout(content)
+        content_l.setContentsMargins(0, 0, 0, 0)
+        content_l.setSpacing(0)
+
+        # Slot rail — left column
+        self.slotRail = QListWidget()
+        self.slotRail.setObjectName('SlotRail')
+        self.slotRail.setFixedWidth(118)
+        self.slotRail.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.slotRail.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.slotRail.setItemDelegate(SlotItemDelegate(self.slotRail))
+        self.slotRail.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.slotRail.setMouseTracking(True)
+
+        # Stacked preset panels — right column
+        self.stack = QStackedWidget()
         self.panels: list[PresetPanel] = []
+
         for slot in range(1, self.NUM_SLOTS + 1):
+            item = QListWidgetItem(f'C{slot}')
+            item.setData(Qt.ItemDataRole.UserRole,     '')        # film sim name
+            item.setData(Qt.ItemDataRole.UserRole + 1, '#666670') # sim colour
+            item.setData(Qt.ItemDataRole.UserRole + 2, False)     # dirty flag
+            self.slotRail.addItem(item)
+
             panel = PresetPanel(slot)
             panel.writeRequested.connect(self._on_write_slot)
             panel.dirtyChanged.connect(self._on_panel_dirty_changed)
             panel.saveAsRecipeRequested.connect(self._on_save_as_recipe)
-            self.tabs.addTab(panel, f'C{slot}')
+            self.stack.addWidget(panel)
             self.panels.append(panel)
-        root.addWidget(self.tabs, 1)
+
+        self.slotRail.currentRowChanged.connect(self.stack.setCurrentIndex)
+        self.slotRail.setCurrentRow(0)
+
+        content_l.addWidget(self.slotRail)
+        content_l.addWidget(self.stack, 1)
+        root.addWidget(content, 1)
 
         self.setStatusBar(QStatusBar())
+        self.statusBar().setSizeGripEnabled(True)
         self.statusBar().showMessage('Ready')
 
-    # ---------------------------------------------------------- worker setup
+    # ──────────────────────────────────────────────────────── worker setup ───
 
     def _setup_worker(self) -> None:
         self._thread = QThread(self)
@@ -168,16 +388,17 @@ class MainWindow(QMainWindow):
 
         self._thread.start()
 
-    # --------------------------------------------------------- connection UI
+    # ─────────────────────────────────────────────────── connection UI ───────
 
     def _set_connected(self, connected: bool) -> None:
         self._connected = connected
         self.connDot.setProperty('state', 'on' if connected else 'off')
-        self.connStatus.setText('Connected — X100VI' if connected else 'Disconnected')
+        self.connStatus.setText(f'Connected — {self._model}' if connected else 'Disconnected')
         self.connectBtn.setText('Disconnect' if connected else 'Connect')
         self.readAllBtn.setEnabled(connected and not self._busy)
         for p in self.panels:
             p.writeButton.setEnabled(connected and not self._busy)
+        # Force Qt to re-evaluate the stylesheet property
         self.connDot.style().unpolish(self.connDot)
         self.connDot.style().polish(self.connDot)
 
@@ -198,11 +419,12 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage('Connecting...')
             self._connectRequested.emit()
 
-    # --------------------------------------------------------- worker responses
+    # ─────────────────────────────────────────────────── worker responses ────
 
     def _on_connected(self, model: str) -> None:
+        self._model = model
         self._set_connected(True)
-        self._set_busy(True)  # still busy — read is in progress
+        self._set_busy(True)
         self.statusBar().showMessage('Connected. Reading presets...')
 
     def _on_connection_failed(self, msg: str) -> None:
@@ -219,6 +441,7 @@ class MainWindow(QMainWindow):
 
     def _on_slot_read(self, slot: int, name: str, values) -> None:
         self.panels[slot - 1].load_values(name, values)
+        self._update_slot_item(slot)
 
     def _on_all_slots_read(self, ok: int, total: int) -> None:
         self._set_busy(False)
@@ -230,6 +453,7 @@ class MainWindow(QMainWindow):
     def _on_slot_written(self, slot: int, name: str, values) -> None:
         self._set_busy(False)
         self.panels[slot - 1].load_values(name, values)
+        self._update_slot_item(slot)
         self.statusBar().showMessage(f'Wrote slot C{slot}')
 
     def _on_write_failed(self, slot: int, msg: str) -> None:
@@ -237,7 +461,29 @@ class MainWindow(QMainWindow):
         QMessageBox.critical(self, 'Write failed', msg)
         self.statusBar().showMessage(f'Write to C{slot} failed')
 
-    # --------------------------------------------------------- read / write
+    # ─────────────────────────────────────────────────────── slot rail ───────
+
+    def _update_slot_item(self, slot: int) -> None:
+        """Refresh slot rail item display data from the panel's current state."""
+        item = self.slotRail.item(slot - 1)
+        if item is None:
+            return
+        panel    = self.panels[slot - 1]
+        sim_val  = int(panel.filmSimCombo.currentData() or 0)
+        sim_name = FilmSimLabels.get(sim_val, '')
+        sim_color = SIM_COLORS.get(sim_val, '#666670')
+        item.setData(Qt.ItemDataRole.UserRole,     sim_name)
+        item.setData(Qt.ItemDataRole.UserRole + 1, sim_color)
+        item.setData(Qt.ItemDataRole.UserRole + 2, panel.is_dirty)
+        self.slotRail.viewport().update()
+
+    def _on_panel_dirty_changed(self, slot: int, dirty: bool) -> None:
+        item = self.slotRail.item(slot - 1)
+        if item:
+            item.setData(Qt.ItemDataRole.UserRole + 2, dirty)
+            self.slotRail.viewport().update()
+
+    # ──────────────────────────────────────────────────── read / write ───────
 
     def _on_read_all_clicked(self) -> None:
         if not self._connected:
@@ -264,7 +510,7 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage(f'Writing slot C{slot}...')
         self._writeSlotRequested.emit(slot, name, values)
 
-    # --------------------------------------------------------- recipe browser
+    # ──────────────────────────────────────────────────── recipe browser ─────
 
     def _on_browse_clicked(self) -> None:
         if self._browser is None:
@@ -278,13 +524,13 @@ class MainWindow(QMainWindow):
 
     def _on_recipe_load_requested(self, slot: int, name: str, values) -> None:
         self.panels[slot - 1].load_values(name, values)
-        self.tabs.setCurrentIndex(slot - 1)
+        self.slotRail.setCurrentRow(slot - 1)
+        self._update_slot_item(slot)
         self.statusBar().showMessage(
             f'Loaded "{name}" into C{slot} — press Write to send to camera'
         )
 
     def _on_recipe_write_requested(self, slot: int, name: str, values) -> None:
-        """Load recipe into slot then immediately write to camera."""
         if not self._connected:
             QMessageBox.warning(self, 'Not connected', 'Connect the camera first.')
             return
@@ -297,7 +543,8 @@ class MainWindow(QMainWindow):
         if confirm != QMessageBox.StandardButton.Yes:
             return
         self.panels[slot - 1].load_values(name, values)
-        self.tabs.setCurrentIndex(slot - 1)
+        self.slotRail.setCurrentRow(slot - 1)
+        self._update_slot_item(slot)
         self._set_busy(True)
         self.statusBar().showMessage(f'Writing "{name}" to C{slot}...')
         self._writeSlotRequested.emit(slot, name, values)
@@ -305,10 +552,9 @@ class MainWindow(QMainWindow):
     def _on_browser_destroyed(self) -> None:
         self._browser = None
 
-    # --------------------------------------------------- save slot as recipe
+    # ──────────────────────────────────────────────── save slot as recipe ────
 
     def _on_save_as_recipe(self, slot: int) -> None:
-        """Open the Recipe Creator pre-filled with the current slot values."""
         panel = self.panels[slot - 1]
         name, values = panel.dump_values()
         dlg = RecipeCreatorDialog(initial_name=name, initial_values=values, parent=self)
@@ -317,21 +563,21 @@ class MainWindow(QMainWindow):
 
     def _on_recipe_saved_from_panel(self, slug: str, name: str, values) -> None:
         self.statusBar().showMessage(f'Recipe "{name}" saved to My Recipes')
-        # Notify the open browser to refresh if it's showing My Recipes
         if self._browser is not None:
             self._browser.refresh_user_recipes()
 
-    # --------------------------------------------------------- recipe card export
+    # ──────────────────────────────────────────────── recipe card export ─────
 
     def _on_export_card_clicked(self) -> None:
-        """Export a 900×540 PNG recipe card for the current slot."""
         from .recipe_card import generate_recipe_card
         from recipes.loader import Recipe
 
-        panel      = self._current_panel()
+        panel        = self._current_panel()
         name, values = panel.dump_values()
         recipe = Recipe(
-            slug=(_safe_filename(name or f'C{panel.slot}').lower().replace(' ', '-') or 'slot'),
+            slug=(
+                _safe_filename(name or f'C{panel.slot}').lower().replace(' ', '-') or 'slot'
+            ),
             title=name or f'Slot C{panel.slot}',
             source=f'Slot C{panel.slot}',
             sensor='slot',
@@ -341,7 +587,7 @@ class MainWindow(QMainWindow):
         pix = generate_recipe_card(recipe)
 
         PRESETS_DIR.mkdir(parents=True, exist_ok=True)
-        safe = _safe_filename(name or f'C{panel.slot}')
+        safe    = _safe_filename(name or f'C{panel.slot}')
         default = str(PRESETS_DIR / f'{safe}_card.png')
         path, _ = QFileDialog.getSaveFileName(
             self, 'Export Recipe Card', default, 'PNG Image (*.png)'
@@ -353,15 +599,10 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.critical(self, 'Export failed', f'Could not save to {path}')
 
-    # --------------------------------------------------------- dirty tracking
-
-    def _on_panel_dirty_changed(self, slot: int, dirty: bool) -> None:
-        self.tabs.setTabText(slot - 1, f'C{slot} ●' if dirty else f'C{slot}')
-
-    # --------------------------------------------------------- import/export
+    # ─────────────────────────────────────────────────── import / export ─────
 
     def _current_panel(self) -> PresetPanel:
-        return self.panels[self.tabs.currentIndex()]
+        return self.panels[self.slotRail.currentRow()]
 
     def _on_export_clicked(self) -> None:
         panel = self._current_panel()
@@ -370,8 +611,8 @@ class MainWindow(QMainWindow):
 
         PRESETS_DIR.mkdir(parents=True, exist_ok=True)
         safe_name = _safe_filename(name or f'C{panel.slot}')
-        default = str(PRESETS_DIR / f'{safe_name}.json')
-        path, _ = QFileDialog.getSaveFileName(
+        default   = str(PRESETS_DIR / f'{safe_name}.json')
+        path, _   = QFileDialog.getSaveFileName(
             self, 'Export recipe', default, 'JSON (*.json)'
         )
         if not path:
@@ -393,15 +634,15 @@ class MainWindow(QMainWindow):
         errors = 0
         for panel in self.panels:
             name, values = panel.dump_values()
-            payload = self._values_to_json(values, name=name, slot=panel.slot)
+            payload   = self._values_to_json(values, name=name, slot=panel.slot)
             safe_name = _safe_filename(name or f'C{panel.slot}')
-            path = Path(folder) / f'C{panel.slot}_{safe_name}.json'
+            path      = Path(folder) / f'C{panel.slot}_{safe_name}.json'
             try:
                 with open(path, 'w', encoding='utf-8') as f:
                     json.dump(payload, f, indent=2, ensure_ascii=False)
             except OSError:
                 errors += 1
-        ok = self.NUM_SLOTS - errors
+        ok  = self.NUM_SLOTS - errors
         msg = f'Exported {ok}/{self.NUM_SLOTS} slots to {os.path.basename(folder)}'
         if errors:
             msg += f' ({errors} errors)'
@@ -424,6 +665,7 @@ class MainWindow(QMainWindow):
 
         panel = self._current_panel()
         panel.load_values(name, values)
+        self._update_slot_item(panel.slot)
         self.statusBar().showMessage(
             f'Loaded {os.path.basename(path)} into C{panel.slot} (not yet written to camera)'
         )
@@ -446,6 +688,7 @@ class MainWindow(QMainWindow):
                     payload = json.load(f)
                 name, values = self._json_to_values(payload)
                 self.panels[i].load_values(name, values)
+                self._update_slot_item(i + 1)
                 loaded += 1
             except Exception as e:
                 print(f'Import {fpath.name}: {e}')
@@ -453,21 +696,21 @@ class MainWindow(QMainWindow):
             f'Imported {loaded} recipe(s) into C1–C{loaded} (not yet written to camera)'
         )
 
-    # --------------------------------------------------------- json schema
+    # ──────────────────────────────────────────────────────── JSON schema ────
 
     @staticmethod
     def _values_to_json(values: PresetUIValues, *, name: str, slot: int) -> dict:
         return {
-            'name': name,
-            'camera': 'X100VI',
-            'slot': slot,
-            'filmSimulation':    FilmSimLabels.get(values.filmSimulation, str(values.filmSimulation)),
-            'dynamicRange':      DynRangeLabels.get(values.dynamicRange, str(values.dynamicRange)),
-            'grainEffect':       GrainEffectLabels.get(values.grainEffect, str(values.grainEffect)),
-            'colorChrome':       ColorChromeLabels.get(values.colorChrome, str(values.colorChrome)),
+            'name':              name,
+            'camera':            'X100VI',
+            'slot':              slot,
+            'filmSimulation':    FilmSimLabels.get(values.filmSimulation,    str(values.filmSimulation)),
+            'dynamicRange':      DynRangeLabels.get(values.dynamicRange,     str(values.dynamicRange)),
+            'grainEffect':       GrainEffectLabels.get(values.grainEffect,   str(values.grainEffect)),
+            'colorChrome':       ColorChromeLabels.get(values.colorChrome,   str(values.colorChrome)),
             'colorChromeFxBlue': ColorChromeFxBlueLabels.get(values.colorChromeFxBlue, str(values.colorChromeFxBlue)),
-            'smoothSkin':        SmoothSkinLabels.get(values.smoothSkin, str(values.smoothSkin)),
-            'whiteBalance':      WBModeLabels.get(values.whiteBalance, str(values.whiteBalance)),
+            'smoothSkin':        SmoothSkinLabels.get(values.smoothSkin,     str(values.smoothSkin)),
+            'whiteBalance':      WBModeLabels.get(values.whiteBalance,       str(values.whiteBalance)),
             'wbShiftR':          values.wbShiftR,
             'wbShiftB':          values.wbShiftB,
             'wbColorTemp':       values.wbColorTemp,
@@ -493,22 +736,22 @@ class MainWindow(QMainWindow):
             return default
 
         values = PresetUIValues(
-            filmSimulation=lookup(FilmSimLabels, 'filmSimulation'),
-            dynamicRange=lookup(DynRangeLabels, 'dynamicRange'),
-            grainEffect=lookup(GrainEffectLabels, 'grainEffect'),
-            colorChrome=lookup(ColorChromeLabels, 'colorChrome'),
+            filmSimulation=lookup(FilmSimLabels,            'filmSimulation'),
+            dynamicRange=lookup(DynRangeLabels,             'dynamicRange'),
+            grainEffect=lookup(GrainEffectLabels,           'grainEffect'),
+            colorChrome=lookup(ColorChromeLabels,           'colorChrome'),
             colorChromeFxBlue=lookup(ColorChromeFxBlueLabels, 'colorChromeFxBlue'),
-            smoothSkin=lookup(SmoothSkinLabels, 'smoothSkin'),
-            whiteBalance=lookup(WBModeLabels, 'whiteBalance'),
-            wbShiftR=int(payload.get('wbShiftR', 0)),
-            wbShiftB=int(payload.get('wbShiftB', 0)),
+            smoothSkin=lookup(SmoothSkinLabels,             'smoothSkin'),
+            whiteBalance=lookup(WBModeLabels,               'whiteBalance'),
+            wbShiftR=int(payload.get('wbShiftR',   0)),
+            wbShiftB=int(payload.get('wbShiftB',   0)),
             wbColorTemp=int(payload.get('wbColorTemp', 6500)),
             highlightTone=float(payload.get('highlightTone', 0)),
-            shadowTone=float(payload.get('shadowTone', 0)),
-            color=float(payload.get('color', 0)),
-            sharpness=float(payload.get('sharpness', 0)),
+            shadowTone=float(payload.get('shadowTone',   0)),
+            color=float(payload.get('color',         0)),
+            sharpness=float(payload.get('sharpness',   0)),
             noiseReduction=int(payload.get('noiseReduction', 0)),
-            clarity=float(payload.get('clarity', 0)),
+            clarity=float(payload.get('clarity',     0)),
             exposure=0.0,
             dRangePriority=lookup(DRangePriorityLabels, 'dRangePriority'),
             monoWC=float(payload.get('monoWC', 0)),
@@ -517,7 +760,7 @@ class MainWindow(QMainWindow):
         name = str(payload.get('name', ''))
         return name, values
 
-    # ----------------------------------------------------------- teardown
+    # ─────────────────────────────────────────────────────────── teardown ────
 
     def closeEvent(self, event) -> None:
         if self._connected:
@@ -526,6 +769,8 @@ class MainWindow(QMainWindow):
         self._thread.wait(3000)
         super().closeEvent(event)
 
+
+# ---------------------------------------------------------------------------
 
 def _safe_filename(name: str) -> str:
     return (
