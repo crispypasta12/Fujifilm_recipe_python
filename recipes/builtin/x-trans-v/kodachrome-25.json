@@ -1,0 +1,22 @@
+{
+  "slug": "kodachrome-25",
+  "title": "Kodachrome 25 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/03/06/kodachrome-25-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "kodachrome-25.jpg",
+  "params": {
+    "filmSimulation": "Classic Chrome",
+    "grainEffect": "Off",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Daylight, +2 Red & -4 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "+0.5",
+    "shadow": "-0.5",
+    "color": "+1",
+    "sharpness": "+3",
+    "noiseReduction": "-4",
+    "clarity": "+3",
+    "iso": "Auto, up to ISO 1600",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

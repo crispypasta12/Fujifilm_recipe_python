@@ -1,0 +1,22 @@
+{
+  "slug": "thommys-ektachrome",
+  "title": "Thommy’s Ektachrome — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/03/24/thommys-ektachrome-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "thommys-ektachrome.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg.",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Weak",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "5000K, -1 Red & +3 Blue",
+    "dynamicRange": "DR100",
+    "highlight": "+1.5",
+    "shadow": "+1.5",
+    "color": "+1",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+0 to +1/3 (typically)"
+  }
+}

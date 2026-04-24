@@ -1,0 +1,21 @@
+{
+  "slug": "kodak-t-max-100-hard-tone-a",
+  "title": "Kodak T-Max 100 Hard Tone — A Film Simulation Recipe for Fujifilm X-Trans IV & X-Trans V Cameras (Part 1)",
+  "source": "https://fujixweekly.com/2024/10/04/kodak-t-max-100-hard-tone-a-film-simulation-recipe-for-fujifilm-x-trans-iv-x-trans-v-cameras-part-1/",
+  "image": "kodak-t-max-100-hard-tone-a.jpg",
+  "params": {
+    "filmSimulation": "Monochrome+G",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Daylight, -6 Red & -3 Blue",
+    "dynamicRange": "DR200",
+    "highlight": "+0.5",
+    "shadow": "+2.5",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-1",
+    "iso": "up to ISO 6400",
+    "exposureCompensation": "-2/3 to +2/3 (typically)"
+  }
+}

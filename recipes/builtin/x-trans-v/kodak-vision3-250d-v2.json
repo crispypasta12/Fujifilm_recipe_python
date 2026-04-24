@@ -1,0 +1,21 @@
+{
+  "slug": "kodak-vision3-250d-v2",
+  "title": "Kodak Vision3 250D v2 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/12/19/kodak-vision3-250d-v2-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "kodak-vision3-250d-v2.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg.",
+    "dynamicRange": "DR200",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "highlight": "+4",
+    "shadow": "+3",
+    "color": "-1",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

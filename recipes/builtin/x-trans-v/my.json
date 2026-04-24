@@ -1,0 +1,19 @@
+{
+  "slug": "my",
+  "title": "My Fujifilm X100V Kodachrome 64 Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2020/05/27/my-fujifilm-x100v-kodachrome-64-film-simulation-recipe/",
+  "image": "my.jpg",
+  "params": {
+    "dynamicRange": "DR200",
+    "highlight": "0",
+    "shadow": "0",
+    "color": "+2",
+    "noiseReduction": "-4",
+    "clarity": "+3",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "whiteBalance": "Daylight, +2 Red & -5 Blue",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

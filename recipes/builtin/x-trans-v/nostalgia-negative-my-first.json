@@ -1,0 +1,22 @@
+{
+  "slug": "nostalgia-negative-my-first",
+  "title": "Nostalgia Negative — My First Fujifilm X-T5 (X-Trans V) Film Simulation Recipe!!",
+  "source": "https://fujixweekly.com/2022/11/22/nostalgia-negative-my-first-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "nostalgia-negative-my-first.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Daylight, +3 Red & -3 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "-1",
+    "shadow": "+1",
+    "color": "+4",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

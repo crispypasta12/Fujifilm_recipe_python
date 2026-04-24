@@ -1,0 +1,22 @@
+{
+  "slug": "texas-sun",
+  "title": "Texas Sun — Fujifilm X-Trans V Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/12/04/texas-sun-fujifilm-x-trans-v-film-simulation-recipe/",
+  "image": "texas-sun.jpg",
+  "params": {
+    "filmSimulation": "Classic Chrome",
+    "dynamicRange": "DR200",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "6500K, +2 Red & -6 Blue",
+    "highlight": "-2",
+    "shadow": "-0.5",
+    "color": "+4",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "0",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+2/3 to +1 (typically)"
+  }
+}

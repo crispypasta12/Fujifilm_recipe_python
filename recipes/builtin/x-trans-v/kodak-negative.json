@@ -1,0 +1,22 @@
+{
+  "slug": "kodak-negative",
+  "title": "Kodak Negative — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2022/12/22/kodak-negative-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "kodak-negative.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Auto, +1 Red & -4 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "-0.5",
+    "shadow": "+2.5",
+    "color": "+4",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +2/3 (typically)"
+  }
+}

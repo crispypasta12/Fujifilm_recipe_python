@@ -1,0 +1,22 @@
+{
+  "slug": "bewaremyvelvia-a",
+  "title": "BewareMyVelvia — A Fujifilm Film Simulation Recipe for X-Trans IV & V",
+  "source": "https://fujixweekly.com/2026/01/13/bewaremyvelvia-a-fujifilm-film-simulation-recipe-for-x-trans-iv-v/",
+  "image": "bewaremyvelvia-a.jpg",
+  "params": {
+    "filmSimulation": "Velvia",
+    "dynamicRange": "DR200",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Strong",
+    "whiteBalance": "6590K, -9 Red & 0 Blue",
+    "highlight": "+2",
+    "shadow": "+2",
+    "color": "+4",
+    "sharpness": "+1",
+    "noiseReduction": "-4",
+    "clarity": "0",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

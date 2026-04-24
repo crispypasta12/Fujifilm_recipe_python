@@ -1,0 +1,19 @@
+{
+  "slug": "fujifilm-x100v",
+  "title": "Fujifilm X100V Film Simulation Recipe: Bright Summer",
+  "source": "https://fujixweekly.com/2020/09/12/fujifilm-x100v-film-simulation-recipe-preet/",
+  "image": "fujifilm-x100v.jpg",
+  "params": {
+    "dynamicRange": "DR400",
+    "highlight": "-2",
+    "shadow": "-2",
+    "color": "+4",
+    "noiseReduction": "-4",
+    "clarity": "-5",
+    "grainEffect": "Off",
+    "colorChrome": "Strong",
+    "whiteBalance": "7100K, -4 Red & -2 Blue",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1 to +2 (typically)"
+  }
+}

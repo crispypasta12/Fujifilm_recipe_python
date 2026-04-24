@@ -1,0 +1,22 @@
+{
+  "slug": "kodacolor-vr-200",
+  "title": "Kodacolor VR 200 — Fujifilm X-Trans V Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2025/04/16/kodacolor-vr-200-fujifilm-x-trans-v-film-simulation-recipe/",
+  "image": "kodacolor-vr-200.jpg",
+  "params": {
+    "filmSimulation": "Classic Chrome",
+    "dynamicRange": "DR200",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "3000K, +8 Red & -8 Blue",
+    "highlight": "+1.5",
+    "shadow": "+2.5",
+    "color": "-4",
+    "sharpness": "+1",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "fujicolor-reala-100",
+  "title": "Fujicolor Reala 100 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/09/06/fujicolor-reala-100-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "fujicolor-reala-100.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Daylight, 0 Red & 0 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "-1",
+    "shadow": "-1",
+    "color": "0",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +1 (typically)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "can-ai-make-a",
+  "title": "Can AI Make a Fujifilm Recipe? — Kodak Ektachrome E100VS — Two Fujifilm X-T5 (X-Trans V + X-Trans IV) Film Simulation Recipes!!",
+  "source": "https://fujixweekly.com/2023/04/29/can-ai-make-a-fujifilm-recipe-kodak-ektachrome-e100vs-two-fujifilm-x-t5-x-trans-v-x-trans-iv-film-simulation-recipes/",
+  "image": "can-ai-make-a.jpg",
+  "params": {
+    "filmSimulation": "Velvia",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Strong",
+    "whiteBalance": "Auto, +2 Red & -2 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "+1",
+    "shadow": "+1",
+    "color": "+2",
+    "sharpness": "+1",
+    "noiseReduction": "-2",
+    "clarity": "+1",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +1 (typically)"
+  }
+}

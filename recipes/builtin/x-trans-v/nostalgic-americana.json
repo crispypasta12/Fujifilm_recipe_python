@@ -1,0 +1,22 @@
+{
+  "slug": "nostalgic-americana",
+  "title": "Nostalgic Americana — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/04/29/nostalgic-americana-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "nostalgic-americana.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg.",
+    "dynamicRange": "DR200",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "5800K, -2 Red & -4 Blue",
+    "highlight": "-1",
+    "shadow": "-1.5",
+    "color": "-2",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +2/3 (typically)"
+  }
+}

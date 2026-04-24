@@ -1,0 +1,22 @@
+{
+  "slug": "fujicolor-natura-1600",
+  "title": "Fujicolor Natura 1600 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/02/29/fujicolor-natura-1600-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "fujicolor-natura-1600.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "dynamicRange": "DR400",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "5500K, -1 Red & -2 Blue",
+    "highlight": "-1.5",
+    "shadow": "+1.5",
+    "color": "-2",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-4",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +1 (typically)"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "fluorescent-night",
+  "title": "Fluorescent Night — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/12/04/fluorescent-night-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "fluorescent-night.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg.",
+    "dynamicRange": "DR200",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "highlight": "-1",
+    "shadow": "-1.5",
+    "color": "+4",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-2/3 to +2/3 (typically)"
+  }
+}

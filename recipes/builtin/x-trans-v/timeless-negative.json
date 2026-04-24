@@ -1,0 +1,22 @@
+{
+  "slug": "timeless-negative",
+  "title": "Timeless Negative — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2022/11/30/timeless-negative-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "timeless-negative.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Auto, +2 Red & -3 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "+2",
+    "shadow": "-2",
+    "color": "-3",
+    "sharpness": "0",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-2/3 to +1/3 (typically)"
+  }
+}

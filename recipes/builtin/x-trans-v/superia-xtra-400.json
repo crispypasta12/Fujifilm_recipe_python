@@ -1,0 +1,22 @@
+{
+  "slug": "superia-xtra-400",
+  "title": "Superia Xtra 400 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2022/12/09/superia-xtra-400-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "superia-xtra-400.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Auto, +3 Red & -5 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "0",
+    "shadow": "-1",
+    "color": "+4",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +1 (typically)"
+  }
+}

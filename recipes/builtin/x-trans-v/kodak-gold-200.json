@@ -1,0 +1,22 @@
+{
+  "slug": "kodak-gold-200",
+  "title": "Kodak Gold 200 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/10/24/kodak-gold-200-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "kodak-gold-200.jpg",
+  "params": {
+    "filmSimulation": "Classic Chrome",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Weak",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Daylight, +4 Red & -5 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "-1.5",
+    "shadow": "+0.5",
+    "color": "+3",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+2/3 to +1 (typically)"
+  }
+}

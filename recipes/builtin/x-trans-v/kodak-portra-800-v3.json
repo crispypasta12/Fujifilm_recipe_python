@@ -1,0 +1,21 @@
+{
+  "slug": "kodak-portra-800-v3",
+  "title": "Kodak Portra 800 v3 — Fujifilm X-T5 (X-Trans V) & X-E4 (X-Trans IV) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/02/14/kodak-portra-800-v3-fujifilm-x-t5-x-trans-v-x-e4-x-trans-iv-film-simulation-recipe/",
+  "image": "kodak-portra-800-v3.jpg",
+  "params": {
+    "filmSimulation": "Classic Chrome",
+    "dynamicRange": "DR400",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off (X-Trans V); Weak (X-Trans IV)",
+    "highlight": "-2",
+    "shadow": "-0.5",
+    "color": "+3",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +1 1/3 (typically)"
+  }
+}

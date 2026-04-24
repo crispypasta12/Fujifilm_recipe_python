@@ -1,0 +1,22 @@
+{
+  "slug": "pushed-cinestill-800t",
+  "title": "Pushed CineStill 800T — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/07/22/pushed-cinestill-800t-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "pushed-cinestill-800t.jpg",
+  "params": {
+    "filmSimulation": "Eterna Bleach Bypass",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "7700K, -9 Red & +5 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "-0.5",
+    "shadow": "+1.5",
+    "color": "+3",
+    "sharpness": "0",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-1/3 to +2/3 (typically)"
+  }
+}

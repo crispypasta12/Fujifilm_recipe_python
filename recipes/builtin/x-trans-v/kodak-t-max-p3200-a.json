@@ -1,0 +1,21 @@
+{
+  "slug": "kodak-t-max-p3200-a",
+  "title": "Kodak T-Max P3200 — A Fujifilm Film Simulation Recipe for X-Trans IV & V",
+  "source": "https://fujixweekly.com/2023/05/18/kodak-t-max-p3200-a-fujifilm-film-simulation-recipe-for-x-trans-iv-v/",
+  "image": "kodak-t-max-p3200-a.jpg",
+  "params": {
+    "filmSimulation": "Acros (",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "5500K, +4 Red & +7 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "+1",
+    "shadow": "+3",
+    "sharpness": "+2",
+    "noiseReduction": "-4",
+    "clarity": "+1",
+    "iso": "up to ISO 12800",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "classic-color",
+  "title": "Classic Color — Fujifilm X-T5 (X-Trans V) and X-E4 (X-Trans IV) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/04/22/classic-color-fujifilm-x-t5-x-trans-v-and-x-e4-x-trans-iv-film-simulation-recipe/",
+  "image": "classic-color.jpg",
+  "params": {
+    "filmSimulation": "Classic Chrome",
+    "dynamicRange": "DR400",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Strong",
+    "whiteBalance": "5300K, 0 Red & -6 Blue",
+    "highlight": "-0.5",
+    "shadow": "-2",
+    "color": "+3",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +1 (typically)"
+  }
+}

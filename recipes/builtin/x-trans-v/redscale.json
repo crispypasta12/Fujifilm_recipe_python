@@ -1,0 +1,22 @@
+{
+  "slug": "redscale",
+  "title": "RedScale — Fujifilm X-Trans IV & V Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2025/02/18/redscale-fujifilm-x-trans-iv-v-film-simulation-recipe/",
+  "image": "redscale.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "dynamicRange": "DR200",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "10000K, +9 Red & -9 Blue",
+    "highlight": "0",
+    "shadow": "+2",
+    "color": "+4",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

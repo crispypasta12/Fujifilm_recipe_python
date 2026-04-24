@@ -1,0 +1,22 @@
+{
+  "slug": "vintage-cinema",
+  "title": "Vintage Cinema — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/06/07/vintage-cinema-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "vintage-cinema.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg.",
+    "dynamicRange": "DR400",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "4900K, +3 Red & +3 Blue",
+    "highlight": "+3",
+    "shadow": "-2",
+    "color": "-1",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-4",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-1/3 to -2 (typically)"
+  }
+}

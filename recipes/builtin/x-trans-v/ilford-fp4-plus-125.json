@@ -1,0 +1,21 @@
+{
+  "slug": "ilford-fp4-plus-125",
+  "title": "Ilford FP4 Plus 125 — Fujifilm X-T5 (X-Trans V + X-Trans IV) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2022/12/28/ilford-fp4-plus-125-fujifilm-x-t5-x-trans-v-x-trans-iv-film-simulation-recipe/",
+  "image": "ilford-fp4-plus-125.jpg",
+  "params": {
+    "filmSimulation": "Monochrome",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Daylight, +6 Red & -8 Blue",
+    "dynamicRange": "DR200",
+    "highlight": "-0.5",
+    "shadow": "-1.5",
+    "sharpness": "0",
+    "noiseReduction": "-4",
+    "clarity": "+2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-1 to -1/3 (typically)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "fujifilm-negative",
+  "title": "Fujifilm Negative — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/10/31/fujifilm-negative-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "fujifilm-negative.jpg",
+  "params": {
+    "filmSimulation": "Reala Ace",
+    "dynamicRange": "DR400",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "5000K, 0 Red & -2 Blue",
+    "highlight": "-1",
+    "shadow": "-0.5",
+    "color": "+2",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +1 (typically)"
+  }
+}

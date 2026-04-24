@@ -1,0 +1,21 @@
+{
+  "slug": "frgmt-bw-a",
+  "title": "FRGMT B&W — A Fujifilm Film Simulation Recipe by Hiroshi Fujiwara",
+  "source": "https://fujixweekly.com/2025/12/04/frgmt-bw-a-fujifilm-film-simulation-recipe-by-hiroshi-fujiwara/",
+  "image": "frgmt-bw-a.jpg",
+  "params": {
+    "filmSimulation": "Acros",
+    "dynamicRange": "DR-Auto",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Auto, 0 Red & 0 Blue",
+    "highlight": "+4",
+    "shadow": "+2",
+    "sharpness": "-4",
+    "noiseReduction": "-4",
+    "clarity": "+5",
+    "iso": "Auto, up to ISO 12800",
+    "exposureCompensation": "0 to +2/3 (typically) — Hiroshi says +1/3"
+  }
+}

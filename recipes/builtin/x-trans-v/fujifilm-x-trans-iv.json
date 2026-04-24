@@ -1,0 +1,19 @@
+{
+  "slug": "fujifilm-x-trans-iv",
+  "title": "Fujifilm X-Trans IV Film Simulation Recipe: Reggie’s Portra",
+  "source": "https://fujixweekly.com/2022/06/11/fujifilm-x-trans-iv-film-simulation-recipe-reggies-portra/",
+  "image": "fujifilm-x-trans-iv.jpg",
+  "params": {
+    "dynamicRange": "DR-Auto",
+    "highlight": "-1",
+    "shadow": "-1",
+    "color": "+2",
+    "noiseReduction": "-4",
+    "clarity": "0",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "whiteBalance": "Auto, +2 Red & -4 Blue",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +1 (typically)"
+  }
+}

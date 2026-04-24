@@ -1,0 +1,22 @@
+{
+  "slug": "vintage-bronze",
+  "title": "Vintage Bronze — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/01/13/vintage-bronze-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "vintage-bronze.jpg",
+  "params": {
+    "filmSimulation": "Eterna Bleach Bypass",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Off",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Daylight, +6 Red & -8 Blue",
+    "dynamicRange": "DR200",
+    "highlight": "0",
+    "shadow": "-1",
+    "color": "0",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-2/3 to 0 (typically)"
+  }
+}

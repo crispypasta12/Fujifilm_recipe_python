@@ -1,0 +1,21 @@
+{
+  "slug": "vintage-eterna",
+  "title": "Vintage Eterna — Fujifilm X-Trans V, X-Trans IV, & X-H1 Film Simulation Recipes",
+  "source": "https://fujixweekly.com/2024/02/05/vintage-eterna-fujifilm-x-trans-v-x-trans-iv-x-h1-film-simulation-recipes/",
+  "image": "vintage-eterna.jpg",
+  "params": {
+    "filmSimulation": "Eterna",
+    "dynamicRange": "DR100",
+    "grainEffect": "Strong",
+    "colorChrome": "Off or N/A",
+    "highlight": "+3",
+    "shadow": "-1",
+    "color": "+2",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "-2/3 to 0 (typically)",
+    "colorChromeFxBlue": "Strong",
+    "clarity": "-2"
+  }
+}

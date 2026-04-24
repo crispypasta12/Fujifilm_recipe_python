@@ -1,0 +1,22 @@
+{
+  "slug": "cinestill-400d-v2-a",
+  "title": "CineStill 400D v2 — A Fujifilm X-Trans IV & V Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2023/01/17/cinestill-400d-v2-a-fujifilm-x-trans-iv-v-film-simulation-recipe/",
+  "image": "cinestill-400d-v2-a.jpg",
+  "params": {
+    "filmSimulation": "Astia",
+    "grainEffect": "Strong, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Fluorescent 1, -2 Red & +4 Blue",
+    "dynamicRange": "DR200",
+    "highlight": "-2",
+    "shadow": "0",
+    "color": "+2",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-4",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+1/3 to +1 (typically)"
+  }
+}

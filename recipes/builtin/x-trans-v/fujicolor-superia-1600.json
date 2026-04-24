@@ -1,0 +1,22 @@
+{
+  "slug": "fujicolor-superia-1600",
+  "title": "Fujicolor Superia 1600 — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/02/25/fujicolor-superia-1600-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "fujicolor-superia-1600.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "dynamicRange": "DR400",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Daylight, +3 Red & +1 Blue",
+    "highlight": "0",
+    "shadow": "+2",
+    "color": "-3",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-4",
+    "iso": "Auto, up to ISO 6400 — for best results: 1600 to 6400",
+    "exposureCompensation": "0 to +1 (typically)"
+  }
+}

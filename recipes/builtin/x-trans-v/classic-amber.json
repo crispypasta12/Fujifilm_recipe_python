@@ -1,0 +1,22 @@
+{
+  "slug": "classic-amber",
+  "title": "Classic Amber – Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2025/11/01/classic-amber-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "classic-amber.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "dynamicRange": "DR400",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Strong",
+    "whiteBalance": "Fluorescent 1, +1 Red & -6 Blue",
+    "highlight": "-1.5",
+    "shadow": "+2.5",
+    "color": "+4",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+2/3 to +1 (typically)"
+  }
+}

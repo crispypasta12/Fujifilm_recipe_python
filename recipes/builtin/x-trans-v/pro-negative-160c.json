@@ -1,0 +1,22 @@
+{
+  "slug": "pro-negative-160c",
+  "title": "PRO Negative 160C — Fujifilm X100VI Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/03/27/pro-negative-160c-fujifilm-x100vi-film-simulation-recipe/",
+  "image": "pro-negative-160c.jpg",
+  "params": {
+    "filmSimulation": "Reala Ace",
+    "dynamicRange": "DR200",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Off",
+    "whiteBalance": "Auto, +1 Red & -2 Blue",
+    "highlight": "-1",
+    "shadow": "-1",
+    "color": "+4",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

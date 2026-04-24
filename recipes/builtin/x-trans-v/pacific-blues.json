@@ -1,0 +1,22 @@
+{
+  "slug": "pacific-blues",
+  "title": "Pacific Blues — Fujifilm X-T5 (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2022/12/06/pacific-blues-fujifilm-x-t5-x-trans-v-film-simulation-recipe/",
+  "image": "pacific-blues.jpg",
+  "params": {
+    "filmSimulation": "Classic Negative",
+    "grainEffect": "Strong, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "5800K, +1 Red & -3 Blue",
+    "dynamicRange": "DR400",
+    "highlight": "-2",
+    "shadow": "+3",
+    "color": "+4",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-3",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+2/3 to +1 (typically)"
+  }
+}

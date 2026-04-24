@@ -1,0 +1,22 @@
+{
+  "slug": "fujifilm-x-t50-film-dial-settings-14-new",
+  "title": "Fujifilm X-T50 Film Dial Settings + 14 New Film Simulation Recipes (Yes, 14!!)",
+  "source": "https://fujixweekly.com/2024/05/16/fujifilm-x-t50-film-dial-settings-14-new-film-simulation-recipes-yes-14/",
+  "image": "fujifilm-x-t50-film-dial-settings-14-new.jpg",
+  "params": {
+    "filmSimulation": "Any",
+    "dynamicRange": "DR400",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "Auto White Priority, +2 Red & -4 Blue",
+    "highlight": "-1.5",
+    "shadow": "-1",
+    "color": "+3",
+    "sharpness": "-1",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +1 (typically)"
+  }
+}

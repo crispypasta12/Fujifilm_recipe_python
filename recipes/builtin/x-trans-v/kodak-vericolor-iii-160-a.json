@@ -1,0 +1,22 @@
+{
+  "slug": "kodak-vericolor-iii-160-a",
+  "title": "Kodak Vericolor III 160 — A Fujifilm Recipe for X-Trans V Cameras",
+  "source": "https://fujixweekly.com/2026/02/20/kodak-vericolor-iii-160-a-fujifilm-recipe-for-x-trans-v-cameras/",
+  "image": "kodak-vericolor-iii-160-a.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg",
+    "grainEffect": "Weak, Small",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Strong",
+    "whiteBalance": "3200K, +7 Red & -8 Blue",
+    "dynamicRange": "DR-Auto",
+    "highlight": "-2",
+    "shadow": "-1",
+    "color": "+2",
+    "sharpness": "-2",
+    "noiseReduction": "-4",
+    "clarity": "-2",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "0 to +2/3 (typically)"
+  }
+}

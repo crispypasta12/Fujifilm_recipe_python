@@ -1,0 +1,22 @@
+{
+  "slug": "appalachian-negative",
+  "title": "Appalachian Negative — Fujifilm X100VI (X-Trans V) Film Simulation Recipe",
+  "source": "https://fujixweekly.com/2024/06/18/appalachian-negative-fujifilm-x100vi-x-trans-v-film-simulation-recipe/",
+  "image": "appalachian-negative.jpg",
+  "params": {
+    "filmSimulation": "Nostalgic Neg.",
+    "dynamicRange": "DR400",
+    "grainEffect": "Weak, Large",
+    "colorChrome": "Strong",
+    "colorChromeFxBlue": "Weak",
+    "whiteBalance": "5200K, +2 Red & -2 Blue",
+    "highlight": "-1.5",
+    "shadow": "0",
+    "color": "+4",
+    "sharpness": "+2",
+    "noiseReduction": "-4",
+    "clarity": "0",
+    "iso": "Auto, up to ISO 6400",
+    "exposureCompensation": "+2/3 to +1 1/3 (typically)"
+  }
+}
