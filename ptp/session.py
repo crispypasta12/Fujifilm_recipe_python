@@ -170,32 +170,30 @@ class FujiCamera:
         return {'slot': slot, 'name': name, 'props': props, 'ui': ui}
 
     def write_preset_slot(
-        self,
-        slot: int,
-        values: PresetUIValues,
-        name: str,
-        base: Optional[list[RawProp]] = None,
-    ) -> None:
-        """Write a preset slot. Selects slot, writes name, writes all props in
-        the order returned by translateUIToPresetProps().
-        """
-        if not (1 <= slot <= 7):
-            raise ValueError(f'slot must be 1-7, got {slot}')
+                self,
+                slot: int,
+                values: PresetUIValues,
+                name: str,
+                base: Optional[list[RawProp]] = None,
+                skip_props: set[int] | None = None,
+            ) -> None:
+            """Write a preset slot. Selects slot, writes name, writes all props in
+                the order returned by translateUIToPresetProps().
+            """
+            if not (1 <= slot <= 7):
+                raise ValueError(f'slot must be 1-7, got {slot}')
 
-        # Select slot
-        self.set_prop(PRESET_SLOT_SELECTOR, struct.pack('<H', slot))
+            self.set_prop(PRESET_SLOT_SELECTOR, struct.pack('<H', slot))
+            self.set_prop(PRESET_NAME_PROP, _encode_ptp_string(name))
 
-        # Write name (D18D) - PTP string
-        self.set_prop(PRESET_NAME_PROP, _encode_ptp_string(name))
-
-        # Write props in exact order from translateUIToPresetProps
-        props = translateUIToPresetProps(values, base=base)
-        for p in props:
-            try:
-                self.set_prop(p.id, p.bytes)
-            except PTPError as exc:
-                # Re-raise with the property ID so the user knows exactly what failed
-                raise PTPError(
-                    f'Writing prop 0x{p.id:04X} '
-                    f'({p.name or "unknown"}) = {p.bytes.hex()}: {exc}'
-                ) from exc
+            props = translateUIToPresetProps(values, base=base)
+            for p in props:
+                if skip_props and p.id in skip_props:
+                    continue
+                try:
+                    self.set_prop(p.id, p.bytes)
+                except PTPError as exc:
+                    raise PTPError(
+                        f'Writing prop 0x{p.id:04X} '
+                        f'({p.name or "unknown"}) = {p.bytes.hex()}: {exc}'
+                    ) from exc

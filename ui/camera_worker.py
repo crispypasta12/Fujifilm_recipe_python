@@ -7,6 +7,8 @@ from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot
 from ptp.session import FujiCamera
 from ptp.transport import PTPError
 
+from ptp.constants import get_skip_props, FujiPropNames
+
 NUM_SLOTS = 7
 
 
@@ -36,6 +38,7 @@ class CameraWorker(QObject):
             cam = FujiCamera()
             cam.connect()
             self._camera = cam
+            self._model = cam.transport.model   # ← hand over model
             self._base_props.clear()
             self.connected.emit(cam.transport.model)
             self._do_read_all()
@@ -65,7 +68,11 @@ class CameraWorker(QObject):
             return
         try:
             base = self._base_props.get(slot)
-            self._camera.write_preset_slot(slot, values, name, base=base)
+            skip = get_skip_props(self._model)
+            if skip:
+                names = ', '.join(FujiPropNames.get(p, f'0x{p:04X}') for p in sorted(skip))
+                self.statusMessage.emit(f'{self._model}: skipping unsupported props: {names}')
+            self._camera.write_preset_slot(slot, values, name, base=base, skip_props=skip)
             result = self._camera.read_preset_slot(slot)
             self._base_props[slot] = result['props']
             self.slotWritten.emit(slot, result['name'], result['ui'])

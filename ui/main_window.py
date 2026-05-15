@@ -421,7 +421,7 @@ class MainWindow(QMainWindow):
 
         self._connected = False
         self._busy      = False
-        self._model     = 'Camera'
+        self._model     = 'Unknown'
         self._browser: Optional[RecipeBrowserDialog] = None
         self._stack_anim: Optional[QParallelAnimationGroup] = None
         self._slot_stripe_anim: Optional[QPropertyAnimation] = None
@@ -1036,7 +1036,7 @@ class MainWindow(QMainWindow):
     def _on_export_clicked(self) -> None:
         panel = self._current_panel()
         name, values = panel.dump_values()
-        payload = self._values_to_json(values, name=name, slot=panel.slot)
+        payload = self._values_to_json(values, name=name, slot=panel.slot, camera=self._model)
 
         PRESETS_DIR.mkdir(parents=True, exist_ok=True)
         safe_name = _safe_filename(name or f'C{panel.slot}')
@@ -1063,7 +1063,7 @@ class MainWindow(QMainWindow):
         errors = 0
         for panel in self.panels:
             name, values = panel.dump_values()
-            payload   = self._values_to_json(values, name=name, slot=panel.slot)
+            payload   = self._values_to_json(values, name=name, slot=panel.slot, camera=self._model)
             safe_name = _safe_filename(name or f'C{panel.slot}')
             path      = Path(folder) / f'C{panel.slot}_{safe_name}.json'
             try:
@@ -1128,10 +1128,10 @@ class MainWindow(QMainWindow):
     # ──────────────────────────────────────────────────────── JSON schema ────
 
     @staticmethod
-    def _values_to_json(values: PresetUIValues, *, name: str, slot: int) -> dict:
+    def _values_to_json(values: PresetUIValues, *, name: str, slot: int, camera: str = 'Unknown') -> dict:
         return {
             'name':              name,
-            'camera':            'X100VI',
+            'camera':            camera,
             'slot':              slot,
             'filmSimulation':    FilmSimLabels.get(values.filmSimulation,    str(values.filmSimulation)),
             'dynamicRange':      DynRangeLabels.get(values.dynamicRange,     str(values.dynamicRange)),

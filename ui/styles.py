@@ -3,9 +3,15 @@
 Single source of truth: every hex code in the app routes through PALETTE.
 Other UI modules (main_window, recipe_browser, preset_panel) import PALETTE
 rather than hard-coding hex values inline.
+
+macOS sizing pass: bumped base font to 13pt, increased control heights,
+padding, and touch targets throughout for Retina / native macOS feel.
 """
 
 from typing import Final
+import sys
+
+IS_MAC = sys.platform == "darwin"
 
 
 # ---------------------------------------------------------------------------
@@ -110,12 +116,70 @@ P = PALETTE  # local shortcut for stylesheet f-string
 
 MONO_FONT = '"JetBrains Mono", "Cascadia Mono", "Consolas", "Menlo", monospace'
 
+# ---------------------------------------------------------------------------
+# macOS-aware size tokens
+# On macOS, Qt renders at logical pixels on Retina so we need larger pt sizes
+# and taller controls compared to Windows.
+# ---------------------------------------------------------------------------
+if IS_MAC:
+    BASE_PT       = 13    # was 10
+    SMALL_PT      = 11    # was 9
+    HEADING_PT    = 17    # was 14
+    SLOT_TAG_PT   = 18    # was 15
+    RECIPE_TTL_PT = 22    # was 18
+    TITLE_PT      = 13    # was 11
+    DOT_PT        = 11    # was 9
+    WIN_BTN_W     = 40    # was 32
+    WIN_BTN_H     = 34    # was 28
+    WIN_BTN_PT    = 14    # was 12
+    CTRL_HEIGHT   = 30    # was 24  (min-height for inputs)
+    BTN_PAD       = "9px 18px"  # was "7px 14px"
+    GROUP_TOP     = 22    # was 18
+    GROUP_PAD_TOP = 18    # was 14
+    PILL_PAD      = "4px 12px"  # was "3px 10px"
+    BADGE_RADIUS  = 13    # was 11
+    BADGE_PT      = 9     # was 8
+    GROUP_TITLE_PT= 9     # was 8
+    SCROLL_W      = 7     # was 5
+else:
+    BASE_PT       = 10
+    SMALL_PT      = 9
+    HEADING_PT    = 14
+    SLOT_TAG_PT   = 15
+    RECIPE_TTL_PT = 18
+    TITLE_PT      = 11
+    DOT_PT        = 9
+    WIN_BTN_W     = 32
+    WIN_BTN_H     = 28
+    WIN_BTN_PT    = 12
+    CTRL_HEIGHT   = 24
+    BTN_PAD       = "7px 14px"
+    PILL_PAD      = "3px 10px"
+    BADGE_RADIUS  = 11
+    BADGE_PT      = 8
+    GROUP_TITLE_PT= 8
+    GROUP_TOP     = 18
+    GROUP_PAD_TOP = 14
+    SCROLL_W      = 5
+
 STYLESHEET = f"""
 * {{
-    font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    font-size: 10pt;
+    font-family: "Inter", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    font-size: {BASE_PT}pt;
     color: {P['text']};
     font-weight: 500;
+}}
+
+/* ── Exclude native file/folder dialogs from custom styling (macOS fix) ── */
+
+QFileDialog * {{
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 13pt;
+    color: initial;
+    background-color: initial;
+    border: initial;
+    padding: initial;
+    font-weight: initial;
 }}
 
 QMainWindow {{
@@ -135,7 +199,7 @@ QWidget#TitleBar {{
 }}
 
 QLabel#titleLabel {{
-    font-size: 11pt;
+    font-size: {TITLE_PT}pt;
     font-weight: 700;
     letter-spacing: 0.5px;
     color: {P['text']};
@@ -144,7 +208,7 @@ QLabel#titleLabel {{
 
 QLabel#titleDot {{
     color: {P['accent']};
-    font-size: 9pt;
+    font-size: {DOT_PT}pt;
     background: transparent;
 }}
 
@@ -153,13 +217,13 @@ QPushButton#winCtrlBtn {{
     border: none;
     border-radius: 5px;
     color: {P['textDim']};
-    font-size: 12pt;
+    font-size: {WIN_BTN_PT}pt;
     font-weight: 500;
     padding: 0;
-    min-width: 32px;
-    max-width: 32px;
-    min-height: 28px;
-    max-height: 28px;
+    min-width: {WIN_BTN_W}px;
+    max-width: {WIN_BTN_W}px;
+    min-height: {WIN_BTN_H}px;
+    max-height: {WIN_BTN_H}px;
 }}
 
 QPushButton#winCtrlBtn:hover {{
@@ -192,7 +256,7 @@ QListWidget#SlotRail {{
     border: none;
     border-right: 1px solid {P['border']};
     outline: none;
-    padding: 6px 0;
+    padding: 8px 0;
 }}
 
 QListWidget#SlotRail::item {{
@@ -218,16 +282,16 @@ QLabel {{
 }}
 
 QLabel[role="heading"] {{
-    font-size: 14pt;
+    font-size: {HEADING_PT}pt;
     font-weight: 600;
     color: {P['accent']};
 }}
 
 QLabel[role="slotTag"] {{
-    font-size: 15pt;
+    font-size: {SLOT_TAG_PT}pt;
     font-weight: 700;
     color: {P['accent']};
-    padding: 2px 8px 2px 14px;
+    padding: 2px 10px 2px 16px;
     border: none;
     border-left: 3px solid {P['accent']};
     background: transparent;
@@ -237,9 +301,9 @@ QLabel[role="simBadge"] {{
     color: {P['textBright']};
     background-color: {P['panelAlt']};
     border: 1px solid {P['border']};
-    border-radius: 11px;
-    padding: 3px 10px;
-    font-size: 8pt;
+    border-radius: {BADGE_RADIUS}px;
+    padding: 4px 12px;
+    font-size: {BADGE_PT}pt;
     font-weight: 800;
     letter-spacing: 0.8px;
 }}
@@ -251,7 +315,7 @@ QLabel[role="dim"] {{
 
 QLabel[role="paramLabel"] {{
     color: {P['textDim']};
-    font-size: 9pt;
+    font-size: {SMALL_PT}pt;
     font-weight: 500;
     letter-spacing: 0.3px;
 }}
@@ -266,8 +330,8 @@ QLabel[role="valuePill"] {{
     color: {P['pillText']};
     font-family: {MONO_FONT};
     font-weight: 600;
-    font-size: 9pt;
-    padding: 3px 10px;
+    font-size: {SMALL_PT}pt;
+    padding: {PILL_PAD};
     border: 1px solid {P['pillBorder']};
     border-radius: 10px;
 }}
@@ -280,7 +344,7 @@ QLabel#RecipeImage {{
 }}
 
 QLabel#RecipeTitle {{
-    font-size: 18pt;
+    font-size: {RECIPE_TTL_PT}pt;
     font-weight: 700;
     color: {P['text']};
     letter-spacing: 0.2px;
@@ -292,8 +356,8 @@ QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox {{
     background-color: {P['panelAlt']};
     border: 1px solid {P['border']};
     border-radius: 7px;
-    padding: 5px 8px;
-    min-height: 24px;
+    padding: 6px 10px;
+    min-height: {CTRL_HEIGHT}px;
     font-weight: 600;
     selection-background-color: {P['accent']};
     selection-color: {P['onAccent']};
@@ -302,13 +366,13 @@ QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox {{
 /* Accent halo on focus — border + subtle background tint */
 QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus {{
     border: 2px solid {P['accent']};
-    padding: 4px 7px;
+    padding: 5px 9px;
     background-color: rgba(232, 132, 10, 0.06);
 }}
 
 QComboBox::drop-down {{
     border: none;
-    width: 20px;
+    width: 24px;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
 }}
@@ -319,7 +383,7 @@ QComboBox QAbstractItemView {{
     border-radius: 6px;
     selection-background-color: {P['accent']};
     selection-color: {P['onAccent']};
-    padding: 2px;
+    padding: 4px;
 }}
 
 /* ── Buttons ───────────────────────────────────────────────────────────── */
@@ -328,7 +392,7 @@ QPushButton {{
     background-color: {P['panelAlt']};
     border: 1px solid {P['border']};
     border-radius: 7px;
-    padding: 7px 14px;
+    padding: {BTN_PAD};
     color: {P['text']};
     font-weight: 600;
 }}
@@ -368,7 +432,7 @@ QStatusBar {{
     background-color: {P['panel']};
     color: {P['textDim']};
     border-top: 1px solid {P['border']};
-    font-size: 9pt;
+    font-size: {SMALL_PT}pt;
     font-weight: 500;
 }}
 
@@ -400,22 +464,22 @@ QLabel#connDot[state="on"] {{
 QGroupBox {{
     border: 1px solid {P['border']};
     border-radius: 8px;
-    margin-top: 18px;
-    padding-top: 14px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 10px;
+    margin-top: {GROUP_TOP}px;
+    padding-top: {GROUP_PAD_TOP}px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 12px;
     background-color: {P['panel']};
 }}
 
 QGroupBox::title {{
     subcontrol-origin: margin;
     subcontrol-position: top left;
-    left: 12px;
+    left: 14px;
     padding: 0 8px;
     color: {P['accent']};
     font-weight: 700;
-    font-size: 8pt;
+    font-size: {GROUP_TITLE_PT}pt;
     letter-spacing: 1px;
     text-transform: uppercase;
     background: transparent;
@@ -429,14 +493,14 @@ QScrollArea, QScrollArea > QWidget > QWidget {{
 
 QScrollBar:vertical {{
     background: {P['bg']};
-    width: 5px;
+    width: {SCROLL_W}px;
     margin: 0;
 }}
 
 QScrollBar::handle:vertical {{
     background: {P['border']};
-    border-radius: 2px;
-    min-height: 24px;
+    border-radius: 3px;
+    min-height: 28px;
 }}
 
 QScrollBar::handle:vertical:hover {{
@@ -454,12 +518,12 @@ QListWidget#RecipeList {{
     border: none;
     border-right: 1px solid {P['border']};
     outline: none;
-    padding: 8px;
+    padding: 10px;
 }}
 
 QListWidget#RecipeList::item {{
     padding: 0;
-    margin: 3px 0;
+    margin: 4px 0;
     border: none;
     border-radius: 8px;
 }}
@@ -478,9 +542,13 @@ QToolButton {{
     background-color: {P['panelAlt']};
     border: 1px solid {P['border']};
     border-radius: 7px;
-    padding: 7px 14px;
+    padding: {BTN_PAD};
     color: {P['text']};
     font-weight: 600;
+}}
+
+QToolButton::menu-indicator {{
+    image: none;
 }}
 
 QToolButton:hover {{
