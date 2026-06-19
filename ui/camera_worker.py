@@ -65,7 +65,13 @@ class CameraWorker(QObject):
             return
         try:
             base = self._base_props.get(slot)
-            self._camera.write_preset_slot(slot, values, name, base=base)
+            skipped = self._camera.write_preset_slot(slot, values, name, base=base)
+            if skipped:
+                names = ', '.join(nm or f'0x{pid:04X}' for pid, nm, _code in skipped)
+                self.statusMessage.emit(
+                    f'Slot {slot} written; {len(skipped)} parameter(s) not '
+                    f'supported by this camera were skipped: {names}'
+                )
             result = self._camera.read_preset_slot(slot)
             self._base_props[slot] = result['props']
             self.slotWritten.emit(slot, result['name'], result['ui'])

@@ -283,5 +283,8 @@ class PTPTransport:
         code, resp_params, resp_data = self.read_ptp_response(timeout=timeout)
         if code != PTPResp.OK:
             from .constants import resp_name
-            raise PTPError(f'PTP op 0x{op_code:04X} failed: {resp_name(code)} (0x{code:04X})')
+            err = PTPError(f'PTP op 0x{op_code:04X} failed: {resp_name(code)} (0x{code:04X})')
+            err.ptp_code = code  # numeric response code, so callers can branch on it
+            err.op_code = op_code
+            raise err
         return code, resp_params, resp_data

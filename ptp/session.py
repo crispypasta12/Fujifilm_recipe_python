@@ -169,15 +169,30 @@ class FujiCamera:
 
         return {'slot': slot, 'name': name, 'props': props, 'ui': ui}
 
+    # Per-property write failures that are safe to skip rather than abort the
+    # whole write. These happen when a recipe parameter doesn't exist on this
+    # camera body (e.g. Smooth Skin Effect on X-Trans IV bodies like the
+    # X-T30 II): the camera rejects that single property but the rest are fine.
+    SKIPPABLE_WRITE_CODES = frozenset({
+        0x200A,  # DevicePropNotSupported
+        0x201B,  # InvalidDevicePropFormat
+        0x201C,  # InvalidDevicePropValue
+    })
+
     def write_preset_slot(
         self,
         slot: int,
         values: PresetUIValues,
         name: str,
         base: Optional[list[RawProp]] = None,
-    ) -> None:
+    ) -> list[tuple[int, str, int]]:
         """Write a preset slot. Selects slot, writes name, writes all props in
         the order returned by translateUIToPresetProps().
+
+        Properties the camera rejects as unsupported/invalid (see
+        SKIPPABLE_WRITE_CODES) are skipped instead of aborting the whole write,
+        so recipes still apply on bodies that lack some parameters. Returns the
+        list of skipped properties as (prop_id, name, ptp_code) tuples.
         """
         if not (1 <= slot <= 7):
             raise ValueError(f'slot must be 1-7, got {slot}')
@@ -189,13 +204,21 @@ class FujiCamera:
         self.set_prop(PRESET_NAME_PROP, _encode_ptp_string(name))
 
         # Write props in exact order from translateUIToPresetProps
+        skipped: list[tuple[int, str, int]] = []
         props = translateUIToPresetProps(values, base=base)
         for p in props:
             try:
                 self.set_prop(p.id, p.bytes)
             except PTPError as exc:
+                code = getattr(exc, 'ptp_code', None)
+                if code in self.SKIPPABLE_WRITE_CODES:
+                    # Parameter not supported on this body - skip and continue.
+                    skipped.append((p.id, p.name or FujiPropNames.get(p.id, ''), code))
+                    continue
                 # Re-raise with the property ID so the user knows exactly what failed
                 raise PTPError(
                     f'Writing prop 0x{p.id:04X} '
                     f'({p.name or "unknown"}) = {p.bytes.hex()}: {exc}'
                 ) from exc
+
+        return skipped

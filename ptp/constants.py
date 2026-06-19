@@ -45,6 +45,11 @@ class PTPResp:
     InvalidStorageID       = 0x2008
     InvalidObjectHandle    = 0x2009
     DevicePropNotSupported = 0x200A
+    AccessDenied           = 0x200F
+    DeviceBusy             = 0x2019
+    InvalidDevicePropFormat = 0x201B
+    InvalidDevicePropValue = 0x201C
+    InvalidParameter       = 0x201D
     SessionAlreadyOpen     = 0x201E
 
 
@@ -155,6 +160,7 @@ FUJI_VENDOR_ID = 0x04CB
 
 FUJI_PRODUCT_IDS = {
     0x02E3: 'X-T30',
+    0x02F3: 'X-T30 II',
     0x02E5: 'X100V',
     0x02E7: 'X-T4',
     0x02F0: 'X-H2S',
